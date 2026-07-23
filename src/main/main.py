@@ -36,7 +36,7 @@ def main():
     write_ordered_calls('../../resources/orderedCalls.csv')
 
     # Helper method that prints the contents of the users and callLogs tables. Uncomment to see data.
-    # select_from_users_and_call_logs()
+    select_from_users_and_call_logs()
 
     # Close the cursor and connection. main function ends here.
     cursor.close()
@@ -48,15 +48,68 @@ def main():
 
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
+    # open cvs file and do not interfer with line endings
+    with open(file_path, newline='', encoding='utf-8') as file:
+        # make each record a dictionary with the first row as the key
+        reader = cvs.DictReader(file)
 
-    print("TODO: load_users")
+        # loop over each dictionary record
+        for row in reader:
+            # if there are too commas in a row, DictReader will make a key None. Continue to prevent these from being inserted
+            if None in row:
+                continue
 
+            # in each dictionary record, get the first name and strip any whitespace at the beginning and the end. "" for error prevention if key doesn't exist
+            first_name = row.get("firstname", "").strip()
+            last_name - row.get("lastname", "").strip()
+
+            # if the row is True, it is an incomplete row and skip insertion into the table
+            if not first_name or not last_name:
+                continue
+
+            # Any records that are complete are then inserted into the users table
+            cursor.execute(
+                """
+                INSERT INTO users (firstName, lastName)
+                VALUES (?, ?)
+                """,
+                (first_name, last_name)
+            )
+
+    conn.commit()
+    
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
+    with open(file_path, newline='', encoding='utf-8') as file:
+        reader = cvs.DictReader(file)
 
-    print("TODO: load_call_logs")
+        # rejects records with too many inserts
+        for row in reader:
+            if None in row:
+                continue
 
+            phone_number = row.get("phoneNumber", "").strip()
+            start_time = row.get("startTime", "").strip()
+            end_time = row.get("endTime", "").strip()
+            direction = row.get("direction", "").strip()
+            user_id = row.get("userId", "").strip()
+
+            # remove records that do not have all the data
+            if not phone_number or not start_time or not end_time or not direction or not user_id:
+                continue
+
+            # Any records that are complete are then inserted into the callLogs table
+            cursor.execute(
+                """
+                INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userId)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (phone_number, start_time, end_time, direction, user_id)
+            )
+
+    conn.commit()
+    
 
 # This function will write analytics data to testUserAnalytics.csv - average call time, and number of calls per user.
 # You must save records consisting of each userId, avgDuration, and numCalls
