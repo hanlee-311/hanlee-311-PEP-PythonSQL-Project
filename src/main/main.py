@@ -51,7 +51,7 @@ def load_and_clean_users(file_path):
     # open cvs file and do not interfer with line endings
     with open(file_path, newline='', encoding='utf-8') as file:
         # make each record a dictionary with the first row as the key
-        reader = cvs.DictReader(file)
+        reader = csv.DictReader(file)
 
         # loop over each dictionary record
         for row in reader:
@@ -82,7 +82,7 @@ def load_and_clean_users(file_path):
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
     with open(file_path, newline='', encoding='utf-8') as file:
-        reader = cvs.DictReader(file)
+        reader = csv.DictReader(file)
 
         # rejects records with too many inserts
         for row in reader:
@@ -109,7 +109,7 @@ def load_and_clean_call_logs(file_path):
             )
 
     conn.commit()
-    
+
 
 # This function will write analytics data to testUserAnalytics.csv - average call time, and number of calls per user.
 # You must save records consisting of each userId, avgDuration, and numCalls
