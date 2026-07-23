@@ -61,7 +61,7 @@ def load_and_clean_users(file_path):
 
             # in each dictionary record, get the first name and strip any whitespace at the beginning and the end. "" for error prevention if key doesn't exist
             first_name = row.get("firstName", "").strip()
-            last_name - row.get("lastName", "").strip()
+            last_name  row.get("lastName", "").strip()
 
             # if the row is True, it is an incomplete row and skip insertion into the table
             if not first_name or not last_name:
