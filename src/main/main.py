@@ -61,7 +61,7 @@ def load_and_clean_users(file_path):
 
             # in each dictionary record, get the first name and strip any whitespace at the beginning and the end. "" for error prevention if key doesn't exist
             first_name = row.get("firstName", "").strip()
-            last_name  row.get("lastName", "").strip()
+            last_name = row.get("lastName", "").strip()
 
             # if the row is True, it is an incomplete row and skip insertion into the table
             if not first_name or not last_name:
@@ -130,7 +130,7 @@ def write_ordered_calls(csv_file_path):
         # get all the records from callLogs, grouped by UserId and startTime
         for row in cursor.execute('SELECT * FROM callLogs GROUP BY UserId, startTime'):
             callId = 1
-            file.write(f"{call}{row[0]},{row[1]},{row[2]}, {row[3]}, {row[4]}\n")
+            file.write(f"{callId}{row[0]},{row[1]},{row[2]}, {row[3]}, {row[4]}\n")
             callId+=1
 
 # No need to touch the functions below!------------------------------------------
