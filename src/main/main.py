@@ -115,17 +115,23 @@ def load_and_clean_call_logs(file_path):
 # You must save records consisting of each userId, avgDuration, and numCalls
 # example: 1,105.0,4 - where 1 is the userId, 105.0 is the avgDuration, and 4 is the numCalls.
 def write_user_analytics(csv_file_path):
+    # open the new file to write to
+    with open(csv_file_path,'w', newline='') as file:
+        # get all the userId, avgDuration, and numCalls from callLogs
+        for row in cursor.execute('SELECT userId, AVG(endTime-startTime) as avgDuration, COUNT(*) as numCalls FROM callLogs GROUP BY UserId'):
+            file.write(f"{row[0]},{row[1]},{row[2]}\n")
 
-    print("TODO: write_user_analytics")
-
-
+        
 # This function will write the callLogs ordered by userId, then start time.
 # Then, write the ordered callLogs to orderedCalls.csv
 def write_ordered_calls(csv_file_path):
-
-    print("TODO: write_ordered_calls")
-
-
+       # open the new file to write to
+    with open(csv_file_path,'w', newline='') as file:
+        # get all the records from callLogs, grouped by UserId and startTime
+        for row in cursor.execute('SELECT * FROM callLogs GROUP BY UserId, startTime'):
+            callId = 1
+            file.write(f"{call}{row[0]},{row[1]},{row[2]}, {row[3]}, {row[4]}\n")
+            callId+=1
 
 # No need to touch the functions below!------------------------------------------
 
