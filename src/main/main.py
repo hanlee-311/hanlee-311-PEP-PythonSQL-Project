@@ -128,10 +128,8 @@ def write_ordered_calls(csv_file_path):
        # open the new file to write to
     with open(csv_file_path,'w', newline='') as file:
         # get all the records from callLogs, grouped by UserId and startTime
-        for row in cursor.execute('SELECT * FROM callLogs GROUP BY UserId, startTime'):
-            callId = 1
-            file.write(f"{callId}{row[0]},{row[1]},{row[2]}, {row[3]}, {row[4]}\n")
-            callId+=1
+        for row in cursor.execute('SELECT * FROM callLogs ORDER BY UserId, startTime'):
+            file.write(f"{row[0]},{row[1]},{row[2]}, {row[3]}, {row[4]}, {row[5]}\n")
 
 # No need to touch the functions below!------------------------------------------
 
