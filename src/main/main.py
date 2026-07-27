@@ -127,7 +127,7 @@ def write_user_analytics(csv_file_path):
 def write_ordered_calls(csv_file_path):
        # open the new file to write to
     with open(csv_file_path,'w', newline='') as file:
-        # get all the records from callLogs, grouped by UserId and startTime
+        # get all the records from callLogs, ordered by UserId and startTime
         for row in cursor.execute('SELECT * FROM callLogs ORDER BY UserId, startTime'):
             file.write(f"{row[0]},{row[1]},{row[2]}, {row[3]}, {row[4]}, {row[5]}\n")
 
